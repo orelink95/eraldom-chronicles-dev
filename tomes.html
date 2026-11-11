@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Tomes of Reference — The Athenaeum Vault</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <link href="styles/tokens.css" rel="stylesheet" />
+    <link href="styles/base.css" rel="stylesheet" />
+    <link href="styles/components.css" rel="stylesheet" />
+    <link href="styles/pages/tomes.css" rel="stylesheet" />
+    <link href="styles/main-style.css" rel="stylesheet" />
+    <script src="scripts/general-scripts.js"></script>
+</head>
+
+<body class="page mystical-bg">
+
+    <div id="dust-container" class="dust-layer"></div>
+    <div id="header-placeholder" class="header-slot"></div>
+    <div id="library-sidebar-placeholder"></div>
+
+    <main class="tomes-main">
+
+        <div class="tomes-head">
+            <div class="tomes-head__intro">
+                <nav class="breadcrumbs" aria-label="Breadcrumb">
+                    <a href="index.html" class="breadcrumbs__link">Athenaeum</a>
+                    <span class="breadcrumbs__separator material-symbols-outlined" aria-hidden="true">chevron_right</span>
+                    <a href="library.html" class="breadcrumbs__link">Black Archive</a>
+                    <span class="breadcrumbs__separator material-symbols-outlined" aria-hidden="true">chevron_right</span>
+                    <span class="breadcrumbs__current" aria-current="page">Tomes of Reference</span>
+                </nav>
+                <h1 class="tomes-head__title">Tomes of Reference</h1>
+                <p class="tomes-head__lede">The grand bibliography of historical events, forbidden art, and codified
+                    knowledge.</p>
+            </div>
+
+            <div class="tome-search">
+                <label class="tome-search__label">Search Library</label>
+                <div class="tome-search__field">
+                    <span class="tome-search__icon material-symbols-outlined">search</span>
+                    <input type="text" id="tome-search" placeholder="Enter title or subject..."
+                        class="tome-search__input">
+                </div>
+            </div>
+        </div>
+
+        <div class="tome-filters" id="tome-filters">
+        </div>
+
+        <div id="tome-grid" class="tome-grid">
+        </div>
+
+    </main>
+
+    <div id="tome-modal" class="tome-modal hidden">
+        <div class="tome-modal__veil" onclick="closeTomeModal()"></div>
+
+        <div class="tome-modal__card">
+            <div class="tome-modal__head">
+                <div>
+                    <p id="modal-tome-type" class="tome-modal__kind"></p>
+                    <h2 id="modal-tome-title" class="tome-modal__title"></h2>
+                    <p id="modal-tome-author" class="tome-modal__author"></p>
+                </div>
+                <button onclick="closeTomeModal()" class="tome-modal__close">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div class="tome-modal__scroll custom-scrollbar">
+                <div id="modal-tome-content" class="tome-modal__text small-drop-cap"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="data/schema.js"></script>
+    <script src="scripts/core/markdown.js"></script>
+    <script src="scripts/core/store.js"></script>
+    <script src="scripts/tomes-scripts.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadComponent("header-placeholder", "components/library-header.html");
+            loadComponent("footer-placeholder", "components/library-footer.html");
+            loadComponent("library-sidebar-placeholder", "components/library-sidebar.html");
+        });
+    </script>
+</body>
+
+</html>

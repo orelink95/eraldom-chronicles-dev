@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Continent Atlas - The Athenaeum Vault</title>
+    <link rel="icon" type="image/png" href="/images/EA-favicon.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <link href="styles/tokens.css" rel="stylesheet" />
+    <link href="styles/base.css" rel="stylesheet" />
+    <link href="styles/components.css" rel="stylesheet" />
+    <link href="styles/pages/continent.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link href="styles/atlas-style.css" rel="stylesheet" />
+    <link href="styles/main-style.css" rel="stylesheet" />
+
+    <script src="scripts/general-scripts.js"></script>
+    <script src="data/schema.js"></script>
+    <script src="scripts/core/markdown.js"></script>
+    <script src="scripts/core/store.js"></script>
+    <script src="scripts/atlas-common.js"></script>
+    <script src="scripts/continent-scripts.js"></script>
+</head>
+
+<body
+    class="page">
+    <input class="hidden" id="sidebar-toggle-input" type="checkbox" />
+
+    <!--Header component-->
+    <div id="header-placeholder"></div>
+
+    <!--sidebar component-->
+    <div id="sidebar-placeholder"></div>
+
+    <main class="continent-main">
+        <!-- filled by Atlas.breadcrumbs (scripts/atlas-common.js) -->
+        <nav id="atlas-breadcrumbs" class="breadcrumbs"></nav>
+        <div class="continent-grid">
+            <div class="continent-main-column">
+                <div class="continent-map-card">
+                    <div
+                        class="continent-map-card__halo">
+                    </div>
+                    <div
+                        class="continent-map-card__frame">
+                        <div id="continent-frame" class="continent-map-card__viewport">
+                            <div id="continent-map"
+                                class="continent-map"></div>
+                            <div
+                                class="continent-map-card__label">
+                                <h1 id="continent-name" class="continent-map-card__name"></h1>
+                                <p id="continent-tagline" class="continent-map-card__tagline"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Lore: the continent's text, or the nation whose pin was clicked -->
+                <div class="lore-panel lore-card">
+                    <div class="lore-panel__glow"
+                        style="background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(179,205,182, 0.08), transparent 40%);">
+                    </div>
+                    <span class="lore-panel__watermark material-symbols-outlined"
+                        style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+                    <div class="lore-panel__scroll custom-scrollbar">
+                        <div class="lore-panel__head">
+                            <div class="lore-panel__meta">
+                                <span id="lore-entry-id" class="lore-panel__entry"></span>
+                                <button id="reset-lore-btn" type="button" class="lore-panel__reset hidden"
+                                    title="Return to Overview">
+                                    <span class="lore-panel__reset-icon material-symbols-outlined">undo</span>
+                                    <span class="lore-panel__reset-label">Overview</span>
+                                </button>
+                            </div>
+                            <h2 id="lore-title" class="lore-panel__title"></h2>
+                            <div class="lore-panel__rule"></div>
+                        </div>
+                        <div id="lore-body" class="lore-panel__body lore"></div>
+                    </div>
+                </div>
+                <div id="continent-facts" class="continent-facts"></div>
+            </div>
+            <div class="continent-side">
+                <section id="nations-section">
+                    <div class="continent-section__head">
+                        <h2 id="nations-title" class="continent-section__title">Nations</h2>
+                    </div>
+                    <ul id="nations-list" class="continent-nations"></ul>
+                </section>
+                <section id="notables-section" class="hidden">
+                    <div class="continent-section__head">
+                        <h2 class="continent-section__title">Very Important People</h2>
+                        <a href="npc.html" class="continent-section__link">Read the Almanach</a>
+                    </div>
+                    <div id="notables-list" class="continent-notables"></div>
+                </section>
+                <div id="epigraph" class="continent-epigraph hidden">
+                    <span
+                        class="continent-epigraph__mark material-symbols-outlined">format_quote</span>
+                    <p id="epigraph-text" class="continent-epigraph__text"></p>
+                    <p id="epigraph-source" class="continent-epigraph__source"></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+
+    <div id="footer-placeholder"></div>
+</body>
+
+</html>

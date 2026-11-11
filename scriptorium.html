@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>The Scriptorium - The Athenaeum Vault</title>
+    <link rel="icon" type="image/png" href="/images/EA-favicon.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <link href="styles/tokens.css" rel="stylesheet" />
+    <link href="styles/base.css" rel="stylesheet" />
+    <link href="styles/components.css" rel="stylesheet" />
+    <link href="styles/pages/scriptorium.css" rel="stylesheet" />
+    <link href="styles/main-style.css" rel="stylesheet" />
+
+    <script src="scripts/general-scripts.js"></script>
+    <script src="data/schema.js"></script>
+    <script src="scripts/core/markdown.js"></script>
+    <script src="scripts/core/store.js"></script>
+    <script src="scripts/scriptorium-scripts.js"></script>
+    
+</head>
+
+<body class="page archival-bg">
+    <div id="header-placeholder"></div>
+
+    <main class="scriptorium-main">
+
+        <section
+            class="narrative">
+            <div
+                class="narrative__glow">
+            </div>
+
+            <div class="narrative__body">
+                <p class="narrative__eyebrow">The Grand Narrative</p>
+                <h1 class="narrative__title">The Story So Far</h1>
+                <p id="story-so-far-preview" class="narrative__preview">
+                </p>
+                <button id="open-story-btn"
+                    class="narrative__open">
+                    <span
+                        class="narrative__open-icon material-symbols-outlined">auto_stories</span>
+                    Read Full Chronicle
+                </button>
+            </div>
+        </section>
+
+        <div class="scriptorium-layout">
+
+            <div class="chronicle">
+
+                <div
+                    class="chronicle-tools">
+                    <div class="chronicle-search">
+                        <span
+                            class="chronicle-search__icon material-symbols-outlined">search</span>
+                        <input type="text" id="scriptorium-search" placeholder="Search keywords, NPCs..."
+                            class="chronicle-search__input">
+                    </div>
+
+                   <div class="chronicle-filters">
+                    <select id="filter-campaign" class="chronicle-filter">
+                        <option value="all">All Campaigns</option>
+                    </select>
+
+                    <select id="filter-arc" class="chronicle-filter">
+                        <option value="all">All Campaign Arcs</option>
+                    </select>
+                    </div>
+                </div>
+
+                <div id="chronicle-timeline" class="timeline">
+                    <div class="timeline__line"></div>
+
+                </div>
+            </div>
+
+            <aside class="scriptorium-aside">
+
+                <div class="leads">
+                    <h3
+                        class="leads__title">
+                        <span class="aside-icon material-symbols-outlined">stylus_note</span> Active Leads
+                    </h3>
+
+                    <div id="quest-list" class="leads__list">
+                    </div>
+
+                    <div class="acquisitions">
+                        <h3 class="acquisitions__title">Notable
+                            Acquisitions</h3>
+                        <div id="notable-loot-list" class="acquisitions__list">
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <div id="story-modal"
+        class="story-modal hidden">
+    </div>
+
+    <div id="session-modal"
+        class="session-modal hidden">
+        <div
+            class="session-modal__card">
+            <div id="session-modal-content" class="session-modal__content custom-scrollbar">
+            </div>
+            <div class="session-modal__foot">
+                <button onclick="closeSessionModal()"
+                    class="session-modal__close">Close
+                    Archive</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+
+    <div id="keyword-tooltip" class="keyword-tooltip">
+        <div class="keyword-tooltip__head">
+            <span id="tooltip-title"
+                class="keyword-tooltip__title">Definition</span>
+            <button onclick="closeTooltip()" class="keyword-tooltip__close">
+                <span class="aside-icon material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="tooltip-body" class="keyword-tooltip__body"></div>
+        <p class="keyword-tooltip__hint">Click keyword to search Scriptorium
+        </p>
+    </div>
+    <div id="handout-tooltip" class="handout-tooltip">
+        </div>
+</body>
+
+</html>

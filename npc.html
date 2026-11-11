@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Dramatis Personae - The Athenaeum Vault</title>
+    <link rel="icon" type="image/png" href="/images/EA-favicon.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link href="styles/tokens.css" rel="stylesheet" />
+    <link href="styles/base.css" rel="stylesheet" />
+    <link href="styles/components.css" rel="stylesheet" />
+    <link href="styles/personae.css" rel="stylesheet" />
+    <link href="styles/pages/npc.css" rel="stylesheet" />
+    <link href="styles/atlas-style.css" rel="stylesheet" />
+    <link href="styles/main-style.css" rel="stylesheet" />
+
+    <script src="scripts/general-scripts.js"></script>
+
+    <script src="data/schema.js"></script>
+    <script src="scripts/core/markdown.js"></script>
+    <script src="scripts/core/store.js"></script>
+    <script src="scripts/personae.js"></script>
+
+    <script src="scripts/npc-scripts.js"></script>
+</head>
+
+<body class="page archival-bg">
+    <div id="header-placeholder"></div>
+
+    <!-- Section tabs: same block in npc.html, heroes.html and factions.html -->
+    <nav class="personae-tabs" aria-label="Dramatis Personae">
+        <a href="npc.html" class="personae-tab is-active" aria-current="page">
+            <span class="personae-tab__icon material-symbols-outlined">group</span>NPCs</a>
+        <a href="heroes.html" class="personae-tab">
+            <span class="personae-tab__icon material-symbols-outlined">local_fire_department</span>Heroes</a>
+        <a href="factions.html" class="personae-tab">
+            <span class="personae-tab__icon material-symbols-outlined">swords</span>Factions</a>
+    </nav>
+
+    <main class="roster-main">
+        <div class="roster">
+            <header class="personae-hero">
+                <p class="personae-hero__eyebrow">Dramatis Personae</p>
+                <h1 class="personae-hero__title">The People of Eraldom</h1>
+                <div class="personae-hero__rule"></div>
+                <select id="personae-campaign" class="personae-picker hidden" aria-label="Campaign"></select>
+            </header>
+
+            <div class="roster-toolbar">
+                <div class="relation-tabs custom-scrollbar" id="relation-tabs">
+                    <button type="button" data-rel="all" class="rel-tab relation-tab is-active relation-tab--all">All<span class="relation-tab__count" data-count="all"></span></button>
+                    <button type="button" data-rel="ally" class="rel-tab relation-tab">Allies<span class="relation-tab__count" data-count="ally"></span></button>
+                    <button type="button" data-rel="neutral" class="rel-tab relation-tab">Neutral<span class="relation-tab__count" data-count="neutral"></span></button>
+                    <button type="button" data-rel="hostile" class="rel-tab relation-tab">Hostile<span class="relation-tab__count" data-count="hostile"></span></button>
+                </div>
+
+                <div class="roster-toolbar__end">
+                    <!-- Location / affiliation: inline from 768px, a panel from the bottom on phones -->
+                    <div class="filters-backdrop" id="filters-backdrop"></div>
+                    <div class="roster-filters" id="roster-filters" role="group" aria-label="Filters">
+                        <div class="roster-filters__head">
+                            <h2 class="roster-filters__heading">Filters</h2>
+                            <button type="button" class="roster-filters__close" id="filters-close" aria-label="Close filters">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+
+                        <label class="filter-select">
+                            <span class="filter-select__label">Location</span>
+                            <select id="filter-settlement" class="filter-select__input">
+                                <option value="all">All Locations</option>
+                            </select>
+                            <span class="filter-select__chevron material-symbols-outlined">expand_more</span>
+                        </label>
+
+                        <label class="filter-select">
+                            <span class="filter-select__label">Affiliation</span>
+                            <select id="filter-affiliation" class="filter-select__input">
+                                <option value="all">All Affiliations</option>
+                            </select>
+                            <span class="filter-select__chevron material-symbols-outlined">expand_more</span>
+                        </label>
+
+                        <div class="roster-filters__foot">
+                            <button type="button" class="roster-filters__reset" id="filters-reset">Reset</button>
+                            <button type="button" class="roster-filters__done" id="filters-done">Done</button>
+                        </div>
+                    </div>
+
+                    <div class="roster-search">
+                        <span class="roster-search__icon material-symbols-outlined">search</span>
+                        <input type="search" id="search-input" placeholder="Search name, role, faction…"
+                            aria-label="Search the roster" class="roster-search__input">
+                    </div>
+
+                    <button type="button" class="filters-toggle" id="filters-toggle"
+                        aria-controls="roster-filters" aria-expanded="false" aria-label="Filters">
+                        <span class="material-symbols-outlined">tune</span>
+                        <span class="filters-toggle__count hidden" id="filters-count"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="npc-grid" class="npc-grid">
+            </div>
+        </div>
+    </main>
+
+    <div id="npc-modal"
+        class="npc-modal hidden">
+        <div
+            class="npc-modal__card" role="dialog" aria-modal="true" aria-labelledby="modal-npc-name">
+            <button type="button" onclick="closeNPCModal()" class="npc-modal__close" aria-label="Close">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+
+            <div class="npc-modal__portrait">
+                <img id="modal-npc-img" class="npc-modal__img" src="" alt="Character Portrait" />
+                <div class="npc-modal__fade-side">
+                </div>
+                <div class="npc-modal__fade-bottom"></div>
+            </div>
+
+            <div class="npc-modal__content custom-scrollbar">
+                <p id="modal-npc-role" class="npc-modal__role"></p>
+                <h2 id="modal-npc-name" class="npc-modal__name"></h2>
+                <p id="modal-npc-quote" class="npc-modal__quote">""</p>
+
+                <div class="npc-modal__facts">
+                    <div>
+                        <p class="npc-modal__fact-label">Species</p>
+                        <p id="modal-npc-species" class="npc-modal__fact-value"></p>
+                    </div>
+                    <div>
+                        <p class="npc-modal__fact-label">Age / Gender</p>
+                        <p id="modal-npc-demographics" class="npc-modal__fact-value"></p>
+                    </div>
+                    <div>
+                        <p class="npc-modal__fact-label">Affiliation</p>
+                        <p id="modal-npc-affiliation" class="npc-modal__fact-value"></p>
+                    </div>
+                    <div class="npc-modal__campaigns">
+                        <p class="npc-modal__fact-label">Campaigns</p>
+                        <ul id="modal-npc-campaigns" class="npc-modal__campaign-list"></ul>
+                    </div>
+                    <div class="npc-modal__whereabouts">
+                        <p class="npc-modal__fact-label">Known Whereabouts
+                        </p>
+                        <div class="npc-modal__location">
+                            <span class="npc-modal__location-icon material-symbols-outlined">location_on</span>
+                            <p id="modal-npc-location" class="npc-modal__location-text"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="npc-modal__section-title">Archival Biography</h3>
+                <div id="modal-npc-body"
+                    class="npc-modal__body">
+                </div>
+
+                <div class="npc-secrets" id="npc-secrets" tabindex="0" role="button" aria-label="Reveal classified secrets">
+                    <h3
+                        class="npc-secrets__title">
+                        <span class="npc-secrets__icon material-symbols-outlined">lock</span> Classified Secrets
+                    </h3>
+
+                    <div id="modal-npc-secrets"
+                        class="npc-secrets__text">
+                    </div>
+
+                    <div
+                        class="npc-secrets__veil">
+                        <span class="npc-secrets__badge"><span class="npc-secrets__hint--hover">Hover</span><span class="npc-secrets__hint--touch">Tap</span> to Decrypt</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+</body>
+
+</html>

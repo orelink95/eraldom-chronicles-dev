@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Book of Shadows — The Athenaeum Vault</title>
+    <link rel="icon" type="image/png" href="/images/EA-favicon.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <link href="styles/tokens.css" rel="stylesheet" />
+    <link href="styles/base.css" rel="stylesheet" />
+    <link href="styles/components.css" rel="stylesheet" />
+    <link href="styles/spell-card.css" rel="stylesheet" />
+    <link href="styles/pages/spellbook.css" rel="stylesheet" />
+    <link href="styles/main-style.css" rel="stylesheet" />
+
+    <script src="scripts/general-scripts.js"></script>
+    <script src="data/schema.js"></script>
+    <script src="scripts/core/markdown.js"></script>
+    <script src="scripts/core/store.js"></script>
+    <script src="scripts/spell-card.js"></script>
+    <script src="scripts/spellbook-scripts.js"></script>
+</head>
+
+<body class="page mystical-bg">
+
+    <div id="dust-container" class="dust-layer"></div>
+    <div id="header-placeholder" class="header-slot"></div>
+    <div id="library-sidebar-placeholder"></div>
+
+    <main class="spellbook-main">
+
+        <div class="spellbook-head">
+            <div class="spellbook-head__intro">
+                <nav class="breadcrumbs" aria-label="Breadcrumb">
+                    <a href="index.html" class="breadcrumbs__link">Athenaeum</a>
+                    <span class="breadcrumbs__separator material-symbols-outlined" aria-hidden="true">chevron_right</span>
+                    <a href="library.html" class="breadcrumbs__link">Black Archive</a>
+                    <span class="breadcrumbs__separator material-symbols-outlined" aria-hidden="true">chevron_right</span>
+                    <span class="breadcrumbs__current" aria-current="page">Book of Shadows</span>
+                </nav>
+                <h1 class="spellbook-head__title">Book of Shadows</h1>
+                <p class="spellbook-head__lede">The spells each hero carries, campaign by campaign. New spells lie
+                    face down: turn them over. Hover a marked M to read what the spell consumes.</p>
+            </div>
+
+            <!-- Campaign first, then hero: the cards appear once both are chosen -->
+            <div class="spellbook-pick">
+                <label class="spellbook-pick__label" for="spellbook-campaign">Campaign</label>
+                <select id="spellbook-campaign" class="spellbook-pick__select"></select>
+                <label class="spellbook-pick__label" for="spellbook-hero">Hero</label>
+                <select id="spellbook-hero" class="spellbook-pick__select" disabled></select>
+            </div>
+        </div>
+
+        <div id="spellbook-cards"></div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadComponent("header-placeholder", "components/library-header.html");
+            loadComponent("footer-placeholder", "components/library-footer.html");
+            loadComponent("library-sidebar-placeholder", "components/library-sidebar.html");
+        });
+    </script>
+</body>
+
+</html>

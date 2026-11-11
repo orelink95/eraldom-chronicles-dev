@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Faction Dossiers - The Athenaeum</title>
+    <link rel="icon" type="image/png" href="/images/EA-favicon.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <link href="styles/tokens.css" rel="stylesheet" />
+    <link href="styles/base.css" rel="stylesheet" />
+    <link href="styles/components.css" rel="stylesheet" />
+    <link href="styles/personae.css" rel="stylesheet" />
+    <link href="styles/pages/factions.css" rel="stylesheet" />
+    <link href="styles/main-style.css" rel="stylesheet" />
+    <script src="scripts/general-scripts.js"></script>
+    <script src="data/schema.js"></script>
+    <script src="scripts/core/markdown.js"></script>
+    <script src="scripts/core/store.js"></script>
+    <script src="scripts/personae.js"></script>
+    <script src="scripts/factions-script.js"></script>
+</head>
+
+<body class="page archival-bg">
+    <div id="header-placeholder"></div>
+
+    <!-- Section tabs: same block in npc.html, heroes.html and factions.html -->
+    <nav class="personae-tabs" aria-label="Dramatis Personae">
+        <a href="npc.html" class="personae-tab">
+            <span class="personae-tab__icon material-symbols-outlined">group</span>NPCs</a>
+        <a href="heroes.html" class="personae-tab">
+            <span class="personae-tab__icon material-symbols-outlined">local_fire_department</span>Heroes</a>
+        <a href="factions.html" class="personae-tab is-active" aria-current="page">
+            <span class="personae-tab__icon material-symbols-outlined">swords</span>Factions</a>
+    </nav>
+
+    <main class="factions-main">
+        <header class="personae-hero">
+            <p class="personae-hero__eyebrow">Dramatis Personae</p>
+            <h1 class="personae-hero__title">Factions &amp; Guilds</h1>
+            <div class="personae-hero__rule"></div>
+            <select id="personae-campaign" class="personae-picker hidden" aria-label="Campaign"></select>
+        </header>
+
+        <div class="factions-layout">
+
+            <aside class="faction-tabs" id="faction-tabs">
+            </aside>
+
+            <div class="dossier hidden"
+                id="dossier-view">
+
+            </div>
+
+            <div id="empty-state"
+                class="dossier-empty">
+                <span class="dossier-empty__icon material-symbols-outlined">folder_open</span>
+                <p class="dossier-empty__text">Select a dossier to view contents
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+
+</html>

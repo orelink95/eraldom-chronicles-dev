@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Hall of Heroes - The Athenaeum</title>
+    <link rel="icon" type="image/png" href="/images/EA-favicon.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <link href="styles/tokens.css" rel="stylesheet" />
+    <link href="styles/base.css" rel="stylesheet" />
+    <link href="styles/components.css" rel="stylesheet" />
+    <link href="styles/spell-card.css" rel="stylesheet" />
+    <link href="styles/personae.css" rel="stylesheet" />
+    <link href="styles/pages/heroes.css" rel="stylesheet" />
+    <link href="styles/main-style.css" rel="stylesheet" />
+
+    <script src="scripts/general-scripts.js"></script>
+    <script src="data/schema.js"></script>
+    <script src="scripts/core/markdown.js"></script>
+    <script src="scripts/core/store.js"></script>
+    <script src="scripts/core/seal.js"></script>
+    <script src="scripts/personae.js"></script>
+    <script src="scripts/spell-card.js"></script>
+</head>
+
+<body class="page archival-bg">
+    <div id="header-placeholder"></div>
+
+    <!-- Section tabs: same block in npc.html, heroes.html and factions.html -->
+    <nav class="personae-tabs" aria-label="Dramatis Personae">
+        <a href="npc.html" class="personae-tab">
+            <span class="personae-tab__icon material-symbols-outlined">group</span>NPCs</a>
+        <a href="heroes.html" class="personae-tab is-active" aria-current="page">
+            <span class="personae-tab__icon material-symbols-outlined">local_fire_department</span>Heroes</a>
+        <a href="factions.html" class="personae-tab">
+            <span class="personae-tab__icon material-symbols-outlined">swords</span>Factions</a>
+    </nav>
+
+    <main class="heroes-main">
+
+        <header class="personae-hero">
+            <p class="personae-hero__eyebrow">Dramatis Personae</p>
+            <h1 id="party-title" class="personae-hero__title">The Heroes</h1>
+            <div class="personae-hero__rule"></div>
+            <select id="party-campaign" class="personae-picker hidden" aria-label="Campaign"></select>
+        </header>
+
+        <div class="heroes-layout">
+
+            <div class="heroes-grid" id="heroes-grid">
+            </div>
+
+            <aside class="heroes-aside">
+                <div class="treasury">
+                    <h3
+                        class="treasury__title">
+                        <span class="panel-icon material-symbols-outlined">savings</span> Party Treasury
+                    </h3>
+
+                    <div
+                        class="treasury__gold">
+                        <div class="treasury__coin-row">
+                            <div
+                                class="treasury__gold-coin">
+                                <span class="treasury__gold-mark">GP</span>
+                            </div>
+                            <span class="treasury__gold-amount" id="gold-amt">0</span>
+                        </div>
+                    </div>
+
+                    <div class="treasury__small">
+                        <div class="treasury__silver">
+                            <div
+                                class="treasury__silver-coin">
+                                <span class="treasury__silver-mark">SP</span>
+                            </div>
+                            <span class="treasury__small-amount" id="silver-amt">0</span>
+                        </div>
+                        <div class="treasury__copper">
+                            <div
+                                class="treasury__copper-coin">
+                                <span class="treasury__copper-mark">CP</span>
+                            </div>
+                            <span class="treasury__small-amount" id="copper-amt">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="fold-panel">
+                    <button onclick="toggleSection('inv-content', 'inv-icon')"
+                        class="fold-panel__toggle">
+                        <h3
+                            class="inventory__title">
+                            <span class="panel-icon material-symbols-outlined">work</span> Shared Inventory
+                        </h3>
+                        <span id="inv-icon"
+                            class="fold-panel__icon material-symbols-outlined">expand_more</span>
+                    </button>
+                    <div id="inv-content" class="fold-panel__content hidden">
+                        <ul id="shared-inv-list" class="fold-panel__list">
+                        </ul>
+                    </div>
+                </div>
+
+                <div
+                    class="fold-panel">
+                    <button onclick="toggleSection('factions-content', 'factions-icon')"
+                        class="fold-panel__toggle">
+                        <h3
+                            class="allegiances__title">
+                            <span class="panel-icon material-symbols-outlined">public</span> Group Factions
+                        </h3>
+                        <span id="factions-icon"
+                            class="fold-panel__icon material-symbols-outlined">expand_more</span>
+                    </button>
+                    <div id="factions-content" class="fold-panel__content hidden">
+                        <ul id="group-factions-list" class="fold-panel__list">
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <div id="password-modal"
+        class="secret-gate hidden">
+        <div class="secret-gate__card">
+            <button onclick="closeSecretModals()" class="secret-gate__close"><span
+                    class="panel-icon material-symbols-outlined">close</span></button>
+
+            <div class="secret-gate__head">
+                <span class="secret-gate__lock material-symbols-outlined">lock</span>
+                <h3 class="secret-gate__title" id="pwd-title">Unlock Secret</h3>
+                <p class="secret-gate__subtitle">Classified File</p>
+            </div>
+
+            <input type="password" id="secret-pwd-input"
+                class="secret-gate__input"
+                placeholder="Enter Passphrase...">
+
+            <p id="pwd-error" class="secret-gate__error hidden">Incorrect
+                Passphrase</p>
+
+            <button onclick="checkPassword()"
+                class="secret-gate__submit">Decrypt</button>
+        </div>
+    </div>
+
+    <div id="secret-modal"
+        class="secret-file hidden">
+        <div
+            class="secret-file__card custom-scrollbar">
+            <button onclick="closeSecretModals()" class="secret-file__close"><span
+                    class="material-symbols-outlined">close</span></button>
+
+            <p class="secret-file__eyebrow"><span
+                    class="panel-icon material-symbols-outlined">warning</span> For Your Eyes Only</p>
+            <h2 class="secret-file__title"
+                id="secret-hero-name">Hero's Secret</h2>
+
+            <div id="secret-content"
+                class="secret-file__text">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const store = await Athenaeum.ready;
+            window.heroesStore = store;
+            const campaigns = store.all('campaign').filter(c => (c.party || []).length);
+            if (!campaigns.length) return;
+
+            // Which party: the campaign picked in the section (scripts/personae.js).
+            // Heroes needs one party, so "All campaigns" falls back to the current one.
+            const P = Athenaeum.personae;
+            let campaign = campaigns.find(c => c.id === P.choose(store, { campaigns, allowAll: false }));
+
+            P.picker(document.getElementById('party-campaign'), {
+                campaigns, value: campaign.id, allowAll: false,
+                onChange: id => {
+                    campaign = campaigns.find(c => c.id === id);
+                    renderParty();
+                }
+            });
+
+            const getMod = (score) => {
+                const mod = Math.floor((score - 10) / 2);
+                return mod >= 0 ? `+${mod}` : mod;
+            };
+
+            function renderParty() {
+            // 1. Header & funds
+            document.getElementById('party-title').textContent = campaign.partyName || campaign.name;
+            const funds = campaign.funds || {};
+            document.getElementById('gold-amt').textContent = funds.gold || 0;
+            document.getElementById('silver-amt').textContent = funds.silver || 0;
+            document.getElementById('copper-amt').textContent = funds.copper || 0;
+
+            // 2. Shared inventory: the party's own items + everything found in this campaign's sessions
+            const sessions = store.all('session').filter(s => s.campaign === campaign.id);
+            const itemIds = [...new Set([...(campaign.inventory || []), ...sessions.flatMap(s => s.loot || [])])];
+            const combinedInventory = itemIds.map(id => store.get(id)).filter(Boolean);
+
+            const invList = document.getElementById('shared-inv-list');
+
+            if (combinedInventory.length === 0) {
+                invList.innerHTML = `<li class="fold-panel__empty">The party's vault is currently empty.</li>`;
+            } else {
+                // Each item opens its card in the Artifact Vault
+                invList.innerHTML = combinedInventory.map(item => `
+                    <li class="inventory-item">
+                        <span class="inventory-item__icon material-symbols-outlined">auto_awesome</span>
+                        <a href="${store.url(item)}" class="inventory-item__link">${item.name}</a>
+                    </li>
+                `).join('');
+            }
+
+            // 3. Hero cards
+            const grid = document.getElementById('heroes-grid');
+            const heroes = (campaign.party || []).map(id => store.get(id)).filter(Boolean);
+
+            grid.innerHTML = heroes.map(hero => {
+                const st = hero.stats || { ac: 10, hp: 10, speed: 30, str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 };
+
+                // Pulling the new data (with fallbacks just in case)
+                const level = hero.level || 1;
+                // Spells this hero knows in THIS campaign (campaign.spellbooks)
+                const spellCount = Athenaeum.spellCard.known(store, campaign, hero).length;
+                const bg = hero.background || "Unknown";
+                const factions = (hero.factions || []).map(id => store.get(id)).filter(Boolean).map(f => {
+                    const href = f.stub ? 'factions.html' : store.url(f);
+                    return `<a href="${href}" onclick="event.stopPropagation();" class="hero-faction-tag">${f.name}</a>`;
+                }).join('');
+
+                return `
+                <div class="hero-card">
+                    <div id="card-inner-${hero.id}" class="hero-card__inner">
+                        
+                        <div onclick="flipCard('${hero.id}')" class="hero-card__front">
+                            
+                            <div class="hero-card__glow"></div>
+                            
+                            <div class="hero-card__face">
+                                <div class="hero-card__identity">
+                                    <img src="${hero.avatar || ''}" alt="${hero.name}" class="hero-card__avatar">
+                                    <div>
+                                        <h2 class="hero-card__name">${hero.name}</h2>
+                                        <p class="hero-card__class">Level ${level} ${hero.raceClass || ''}</p>
+                                    </div>
+                                </div>
+
+                                <div class="hero-card__quote-box">
+                                    <span class="hero-card__quote-mark material-symbols-outlined">format_quote</span>
+                                    <p class="hero-card__quote">"${hero.quote || ''}"</p>
+                                </div>
+
+                                <p class="hero-card__backstory">${hero.backstory || ''}</p>
+
+                                <div class="hero-card__goal-row">
+                                    <div>
+                                        <h4 class="hero-card__label">Current Personal Goal</h4>
+                                        <p class="hero-card__goal">
+                                            <span class="hero-card__goal-icon material-symbols-outlined">target</span>
+                                            ${hero.personalGoal || ''}
+                                        </p>
+                                    </div>
+                                    <div class="hero-card__actions">
+                                        ${spellCount ? `<button onclick="event.stopPropagation(); openSpellbook('${hero.id}')" class="hero-card__spells" title="Spellbook (${spellCount})">
+                                            <span class="material-symbols-outlined">auto_fix_high</span>
+                                        </button>` : ''}
+                                        <span class="hero-card__flip-icon material-symbols-outlined" title="View Stats">autorenew</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div onclick="flipCard('${hero.id}')" class="hero-card__back">
+                            
+                            <div class="hero-card__back-glow"></div>
+                            
+                            <div class="hero-card__face">
+                                
+                                <div class="hero-card__back-head">
+                                    <div>
+                                        <h2 class="hero-card__back-name">${hero.name}</h2>
+                                        <p class="hero-card__back-class">Level ${level} ${hero.raceClass || ''}</p>
+                                    </div>
+                                    <div class="hero-card__background">
+                                        <p class="hero-card__background-label">Background</p>
+                                        <p class="hero-card__background-value">${bg}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="hero-card__divider"></div>
+                                
+                                <div class="hero-card__vitals">
+                                    <p><strong class="hero-card__vital-label">Armor Class</strong> ${st.ac}</p>
+                                    <p><strong class="hero-card__vital-label">Hit Points</strong> ${st.hp}</p>
+                                    <p><strong class="hero-card__vital-label">Speed</strong> ${st.speed} ft.</p>
+                                </div>
+                                
+                                <div class="hero-card__divider"></div>
+                                
+                                <div class="hero-card__abilities">
+                                    <div><strong class="hero-card__ability-label">STR</strong><br>${st.str} <br><span class="hero-card__ability-mod">(${getMod(st.str)})</span></div>
+                                    <div><strong class="hero-card__ability-label">DEX</strong><br>${st.dex} <br><span class="hero-card__ability-mod">(${getMod(st.dex)})</span></div>
+                                    <div><strong class="hero-card__ability-label">CON</strong><br>${st.con} <br><span class="hero-card__ability-mod">(${getMod(st.con)})</span></div>
+                                    <div><strong class="hero-card__ability-label">INT</strong><br>${st.int} <br><span class="hero-card__ability-mod">(${getMod(st.int)})</span></div>
+                                    <div><strong class="hero-card__ability-label">WIS</strong><br>${st.wis} <br><span class="hero-card__ability-mod">(${getMod(st.wis)})</span></div>
+                                    <div><strong class="hero-card__ability-label">CHA</strong><br>${st.cha} <br><span class="hero-card__ability-mod">(${getMod(st.cha)})</span></div>
+                                </div>
+                                
+                                <div class="hero-card__divider"></div>
+                                
+                                <div>
+                                    <h4 class="hero-card__factions-label">Factions & Allegiances</h4>
+                                    <div class="hero-card__factions">
+                                        ${factions || '<span class="hero-card__no-factions">None</span>'}
+                                    </div>
+                                </div>
+
+                                ${hero.sealedSecret ? `<button onclick="event.stopPropagation(); promptSecret('${hero.id}')" class="hero-card__lock" title="Classified File">
+                                    <span class="hero-card__lock-icon material-symbols-outlined">lock</span>
+                                </button>` : ''}
+                                
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            // 4. Party allegiances (factions, or places such as a library)
+            const factionsList = document.getElementById('group-factions-list');
+            const standings = (campaign.standings || []).map(g => ({ rec: store.get(g.faction), status: g.status || 'Unknown' })).filter(g => g.rec);
+            if (standings.length > 0) {
+                factionsList.innerHTML = standings.map(({ rec, status }) => {
+                    // Allied in green, hostile in red (see .standing__status--* in pages/heroes.css)
+                    const statusClass = 'standing__status--' + status.toLowerCase();
+
+                    const href = rec.stub ? 'factions.html' : (store.url(rec) || 'factions.html');
+
+                    return `
+                    <li>
+                        <a href="${href}" class="standing">
+                            <span class="standing__name">${rec.name}</span>
+                            <span class="standing__status ${statusClass}">${status}</span>
+                        </a>
+                    </li>
+                `}).join('');
+            } else {
+                factionsList.innerHTML = `<li class="fold-panel__empty">No known allegiances.</li>`;
+            }
+            }
+
+            // --- SPELLBOOK: the hero's spell cards in the campaign shown (scripts/spell-card.js)
+            window.openSpellbook = (heroId) => {
+                Athenaeum.spellCard.openBook(store, campaign, heroId, {
+                    link: `spellbook.html?campaign=${encodeURIComponent(campaign.id)}&hero=${encodeURIComponent(heroId)}`,
+                });
+            };
+
+            renderParty();
+        });
+
+        // --- 3D CARD FLIP ---
+        window.flipCard = (heroId) => {
+            const cardInner = document.getElementById(`card-inner-${heroId}`);
+            if (cardInner) {
+                // Toggles between rotating 180 degrees and resetting to 0
+                cardInner.style.transform = cardInner.style.transform === 'rotateY(180deg)' ? '' : 'rotateY(180deg)';
+            }
+        };
+
+        // --- SECRET PASSWORD ENGINE ---
+        let currentSecretHeroId = null;
+
+        window.promptSecret = (heroId) => {
+            const hero = window.heroesStore && window.heroesStore.get(heroId);
+
+            // Only heroes with a sealed secret have a file
+            if (!hero || !hero.sealedSecret) return;
+
+            currentSecretHeroId = heroId;
+            document.getElementById('pwd-title').textContent = `${hero.name}'s File`;
+            document.getElementById('secret-pwd-input').value = '';
+            document.getElementById('pwd-error').classList.add('hidden');
+
+            document.getElementById('password-modal').classList.remove('hidden');
+
+            // Auto-focus the input box so players can type immediately
+            setTimeout(() => document.getElementById('secret-pwd-input').focus(), 100);
+        };
+
+        window.checkPassword = async () => {
+            const input = document.getElementById('secret-pwd-input').value;
+            const store = window.heroesStore;
+            const hero = store && store.get(currentSecretHeroId);
+
+            // The secret is stored encrypted: only the right password opens it (capitals don't matter)
+            const secret = hero ? await Athenaeum.unseal(hero.sealedSecret, input) : null;
+            if (secret !== null) {
+                // Success! Close password modal and open secret modal
+                document.getElementById('password-modal').classList.add('hidden');
+                document.getElementById('secret-hero-name').textContent = `Classified: ${hero.name}`;
+                document.getElementById('secret-content').innerHTML = store.md(secret);
+                document.getElementById('secret-modal').classList.remove('hidden');
+            } else {
+                // Failure! Show error message
+                document.getElementById('pwd-error').classList.remove('hidden');
+            }
+        };
+
+        window.closeSecretModals = () => {
+            document.getElementById('password-modal').classList.add('hidden');
+            document.getElementById('secret-modal').classList.add('hidden');
+            currentSecretHeroId = null;
+        };
+
+        // --- FOLDABLE UI ENGINE ---
+        window.toggleSection = (contentId, iconId) => {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+
+            // Toggle the visibility of the content
+            content.classList.toggle('hidden');
+
+            // Rotate the arrow icon 180 degrees
+            icon.classList.toggle('is-open');
+        };
+
+        // Allow pressing the "Enter" key to submit the password
+        document.getElementById('secret-pwd-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') window.checkPassword();
+        });
+    </script>
+</body>
+
+</html>

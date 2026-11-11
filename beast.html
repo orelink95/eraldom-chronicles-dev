@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Codex Entry — The Athenaeum Vault</title>
+    <link rel="icon" type="image/png" href="/images/EA-favicon.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <link href="styles/tokens.css" rel="stylesheet" />
+    <link href="styles/base.css" rel="stylesheet" />
+    <link href="styles/components.css" rel="stylesheet" />
+    <link href="styles/pages/beast.css" rel="stylesheet" />
+    <link href="styles/main-style.css" rel="stylesheet" />
+    <!-- the page's own look (record.look): last, so it wins -->
+    <link href="styles/looks.css" rel="stylesheet" />
+
+    <script src="scripts/general-scripts.js"></script>
+    <script src="data/schema.js"></script>
+    <script src="scripts/core/markdown.js"></script>
+    <script src="scripts/core/store.js"></script>
+    <script src="scripts/core/threat.js"></script>
+    <script src="scripts/core/look.js"></script>
+</head>
+
+<body class="page">
+
+    <div id="header-placeholder" class="header-slot"></div>
+    <div id="library-sidebar-placeholder"></div>
+
+    <main class="beast-main">
+
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="index.html" class="breadcrumbs__link">Athenaeum</a>
+            <span class="breadcrumbs__separator material-symbols-outlined" aria-hidden="true">chevron_right</span>
+            <a href="library.html" class="breadcrumbs__link">Black Archive</a>
+            <span class="breadcrumbs__separator material-symbols-outlined" aria-hidden="true">chevron_right</span>
+            <a href="bestiary.html" class="breadcrumbs__link">The Elder Tarot</a>
+            <span class="breadcrumbs__separator material-symbols-outlined" aria-hidden="true">chevron_right</span>
+            <span id="b-crumb-name" class="breadcrumbs__current" aria-current="page">...</span>
+        </nav>
+
+        <div class="beast-hero">
+
+            <div class="beast-portrait">
+
+                <div class="beast-portrait__corner-tl">
+                </div>
+                <div
+                    class="beast-portrait__corner-br">
+                </div>
+
+                <div
+                    class="beast-portrait__frame">
+                    <img id="b-image" src="" alt="Beast"
+                        class="beast-portrait__img">
+                    <div
+                        class="beast-portrait__fade">
+                    </div>
+                    <div class="beast-portrait__ring"></div>
+
+                    <div id="b-tags" class="beast-portrait__tags"></div>
+                </div>
+            </div>
+
+            <div class="beast-summary">
+                <p class="beast-summary__specimen">Specimen No. <span
+                        id="b-specimen" class="beast-summary__specimen-no"></span></p>
+                <h1 id="b-name" class="beast-summary__name">
+                </h1>
+
+                <div class="beast-stats">
+                    <div class="beast-stats__head">
+                        <span class="beast-stats__icon material-symbols-outlined">analytics</span>
+                        <h3 class="beast-stats__title"> Threat
+                            Assessment</h3>
+                        <span id="b-threat" class="beast-stats__threat"></span>
+                    </div>
+                    <div id="b-stats" class="beast-stats__bars"></div>
+                </div>
+
+                <div class="beast-habitats">
+                    <p class="beast-habitats__label">Known Habitats</p>
+                    <div id="b-habitats" class="beast-habitats__list"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="beast-body">
+
+            <div class="beast-body__main">
+                <div class="beast-lore">
+                    <div class="beast-lore__head">
+                        <h2 id="b-lore-title" class="beast-lore__title"></h2>
+                        <span class="beast-lore__icon material-symbols-outlined">history_edu</span>
+                    </div>
+                    <div id="b-desc" class="beast-lore__lede" hidden></div>
+                    <div id="b-lore-body"
+                        class="beast-lore__text small-drop-cap">
+                    </div>
+                </div>
+
+                <div class="beast-traits">
+                    <div class="beast-traits__panel">
+                        <h3 class="beast-traits__title">Observed
+                            Behaviors</h3>
+                        <ul id="b-behaviors" class="beast-traits__list"></ul>
+                    </div>
+                    <div class="beast-traits__panel">
+                        <h3 class="beast-traits__title beast-traits__title--weaknesses">Known
+                            Weaknesses</h3>
+                        <ul id="b-weaknesses" class="beast-traits__list"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="beast-side">
+
+                <div>
+                    <h3 class="beast-side__title">Loot & Curiosities</h3>
+                    <div id="b-loot" class="beast-drops"></div>
+                </div>
+
+                <div id="b-scholar-container"
+                    class="beast-scholar">
+                    <span class="beast-scholar__label">Scholar's
+                        Note</span>
+                    <p id="b-scholar-quote" class="beast-scholar__quote">
+                    </p>
+                    <p id="b-scholar-name"
+                        class="beast-scholar__name"></p>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const store = await Athenaeum.ready;
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetId = urlParams.get('id');
+
+            // Find the ~beast~ in data/creatures.json
+            let beast = store.get(targetId);
+            if (beast && store.typeOf(beast) !== 'creature') beast = null;
+
+            if (!beast) {
+                document.getElementById('b-name').textContent = "Record Not Found";
+                return;
+            }
+
+            // The page's own look (styles/looks.css), if it has one
+            Athenaeum.look.apply(document.body, beast.look, 'creature');
+            // Populate Basic Info
+            document.getElementById('b-crumb-name').textContent = beast.name;
+            document.getElementById('b-image').src = beast.image;
+            document.getElementById('b-specimen').textContent = beast.specimenNo || "UNKNOWN";
+            document.getElementById('b-name').textContent = beast.name;
+            document.getElementById('b-lore-title').textContent = beast.loreTitle || "Archival Record";
+            document.getElementById('b-lore-body').innerHTML = store.autolink(store.md(beast.body, { dropCap: true }), { exclude: beast.id });
+
+            // Short description: the lede of the lore box (alone if no lore yet)
+            if (beast.shortDesc) {
+                const desc = document.getElementById('b-desc');
+                desc.innerHTML = store.autolink(store.md(beast.shortDesc), { exclude: beast.id });
+                desc.hidden = false;
+            }
+            if (!beast.body) document.getElementById('b-lore-body').hidden = true;
+            if (!beast.body && !beast.shortDesc) document.querySelector('.beast-lore').hidden = true;
+
+            // Populate Tags (over the image)
+            if (beast.tags) {
+                document.getElementById('b-tags').innerHTML = beast.tags.map(t =>
+                    `<span class="beast-tag">${t}</span>`
+                ).join('');
+            }
+
+            // Threat pill, opposite the "Threat Assessment" title
+            if (beast.threat) {
+                document.getElementById('b-threat').innerHTML = creatureThreatPill(beast.threat);
+            }
+
+            // Populate Progress Bars (Stats)
+            if (beast.stats) {
+                document.getElementById('b-stats').innerHTML = beast.stats.map(({ label: statName, value }) => `
+                    <div>
+                        <div class="beast-stat__head">
+                            <span>${statName}</span>
+                            <span class="beast-stat__value">${value} / 100</span>
+                        </div>
+                        <div class="beast-stat__track">
+                            <div class="beast-stat__bar" style="width: ${value}%"></div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Populate Habitats (colored pills)
+            if (beast.habitats) {
+                document.getElementById('b-habitats').innerHTML = beast.habitats.map(h =>
+                    `<span class="beast-habitat"><span class="beast-habitat__icon material-symbols-outlined">landscape</span> ${h}</span>`
+                ).join('');
+            }
+
+            // Populate Lists (Behaviors & Weaknesses)
+            const makeList = (arr) => arr ? arr.map(item => `<li class="beast-trait"><span class="beast-trait__bullet">•</span> <span>${item}</span></li>`).join('') : '';
+            document.getElementById('b-behaviors').innerHTML = makeList(beast.behaviors);
+            document.getElementById('b-weaknesses').innerHTML = makeList(beast.weaknesses);
+            // Hide a panel with nothing in it (and the whole row if both are empty)
+            ['b-behaviors', 'b-weaknesses'].forEach(id => {
+                const list = document.getElementById(id);
+                if (!list.children.length) list.closest('.beast-traits__panel').hidden = true;
+            });
+            if (!(beast.behaviors || []).length && !(beast.weaknesses || []).length) document.querySelector('.beast-traits').hidden = true;
+
+            // Populate Loot
+            if (beast.drops) {
+                document.getElementById('b-loot').innerHTML = beast.drops.map(l => `
+                    <div class="beast-drop">
+                        <div class="beast-drop__badge">
+                            <span class="beast-drop__icon material-symbols-outlined">${l.icon || 'science'}</span>
+                        </div>
+                        <div>
+                            <h4 class="beast-drop__name">${l.name}</h4>
+                            <p class="beast-drop__type">${l.type || ''}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Populate Scholar Note
+            if (beast.scholarQuote) {
+                document.getElementById('b-scholar-quote').textContent = `"${beast.scholarQuote}"`;
+                document.getElementById('b-scholar-name').textContent = `- ${beast.scholarName}`;
+            } else {
+                document.getElementById('b-scholar-container').classList.add('hidden');
+            }
+        });
+
+        // Override standard components for the Library aesthetic
+        document.addEventListener("DOMContentLoaded", () => {
+            loadComponent("header-placeholder", "components/library-header.html");
+            loadComponent("footer-placeholder", "components/library-footer.html");
+            loadComponent("library-sidebar-placeholder", "components/library-sidebar.html");
+        });
+    </script>
+</body>
+
+</html>

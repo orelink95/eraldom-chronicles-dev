@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>World Atlas - The Athenaeum Vault</title>
+    <link rel="icon" type="image/png" href="/images/EA-favicon.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&amp;family=Newsreader:ital,wght@0,400;0,600;1,400&amp;family=Manrope:wght@400;500;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="styles/tokens.css" rel="stylesheet" />
+    <link href="styles/base.css" rel="stylesheet" />
+    <link href="styles/components.css" rel="stylesheet" />
+    <link href="styles/pages/world.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link href="styles/atlas-style.css" rel="stylesheet" />
+    <link href="styles/main-style.css" rel="stylesheet" />
+    <script src="scripts/general-scripts.js"></script>
+    <script src="data/schema.js"></script>
+    <script src="scripts/core/markdown.js"></script>
+    <script src="scripts/core/store.js"></script>
+    <script src="scripts/atlas-common.js"></script>
+    <script src="scripts/atlas-scripts.js"></script>
+</head>
+
+<body
+    class="page">
+    <input class="hidden" id="sidebar-toggle-input" type="checkbox" />
+
+    <!-- inject Header here -->
+    <div id="header-placeholder"></div>
+
+    <!-- inject atlas sidebar here -->
+    <div id="sidebar-placeholder"></div>
+
+
+    <!-- Main Content Canvas -->
+    <main class="page-main">
+
+        <header class="atlas-header">
+            <div>
+                <!-- filled by Atlas.breadcrumbs (scripts/atlas-common.js) -->
+                <nav id="atlas-breadcrumbs" class="breadcrumbs"></nav>
+                <h1 class="atlas-header__title">The Known Realms</h1>
+            </div>
+
+            <!-- one button per map layer that has pins; hidden when there is only one -->
+            <div id="atlas-layers-scroller" class="atlas-layers-scroller custom-scrollbar">
+                <div id="atlas-layers" class="atlas-layers"></div>
+            </div>
+        </header>
+
+        <div class="atlas-grid">
+
+            <div
+                class="lore-panel lore-card">
+
+                <div class="lore-panel__glow"
+                    style="background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(233,193,118, 0.08), transparent 40%);">
+                </div>
+
+                <span
+                    class="lore-panel__watermark material-symbols-outlined"
+                    style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+
+                <div class="lore-panel__scroll custom-scrollbar">
+                    <div class="lore-panel__head">
+                        <div class="lore-panel__meta">
+                            <span id="lore-entry-id"
+                                class="lore-panel__entry"></span>
+                            <button id="reset-lore-btn"
+                                class="lore-panel__reset hidden"
+                                title="Return to Overview">
+                                <span class="lore-panel__reset-icon material-symbols-outlined">undo</span>
+                                <span
+                                    class="lore-panel__reset-label">Overview</span>
+                            </button>
+                        </div>
+                        <h2 id="lore-title"
+                            class="lore-panel__title"></h2>
+                        <div class="lore-panel__rule"></div>
+                    </div>
+
+                    <div id="lore-body"
+                        class="lore-panel__body lore">
+                        <!-- filled from data/world.json -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="atlas-map-column">
+                <div
+                    class="atlas-map-frame">
+                    <div
+                        class="atlas-map-vignette">
+                    </div>
+
+                    <div class="atlas-map-inner">
+                        <div
+                            class="atlas-map__corner-tl">
+                        </div>
+                        <div
+                            class="atlas-map__corner-tr">
+                        </div>
+                        <div
+                            class="atlas-map__corner-bl">
+                        </div>
+                        <div
+                            class="atlas-map__corner-br">
+                        </div>
+
+                        <div id="world-map"
+                            class="atlas-map">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- figures counted from the data by scripts/atlas-scripts.js -->
+        <div class="atlas-stats">
+            <a href="settlements.html" class="atlas-stat--settlements">
+                <div id="stat-settlements-label" class="atlas-stat__label">Known Settlements</div>
+                <div id="stat-settlements" class="atlas-stat__value--primary">–</div>
+                <div id="stat-settlements-note" class="atlas-stat__note"></div>
+            </a>
+            <a href="pois.html" class="atlas-stat--runes">
+                <div id="stat-pois-label" class="atlas-stat__label">Points of Interest</div>
+                <div id="stat-pois" class="atlas-stat__value--tertiary">–</div>
+                <div id="stat-pois-note" class="atlas-stat__note"></div>
+            </a>
+            <a href="npc.html" class="atlas-stat--archived">
+                <div class="atlas-stat__label">Known People</div>
+                <div id="stat-people" class="atlas-stat__value--neutral">–</div>
+                <div id="stat-people-note" class="atlas-stat__note"></div>
+            </a>
+            <a href="factions.html" class="atlas-stat--conflicts">
+                <div class="atlas-stat__label">Known Factions</div>
+                <div id="stat-factions" class="atlas-stat__value--secondary">–</div>
+                <div id="stat-factions-note" class="atlas-stat__note"></div>
+            </a>
+        </div>
+    </main>
+    <div id="footer-placeholder"></div>
+
+
+</body>
+
+</html>
