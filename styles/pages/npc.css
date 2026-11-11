@@ -1,0 +1,1204 @@
+/* NPC roster (npc.html) */
+
+.page {
+    overflow-x: hidden;
+    background-color: var(--color-surface);
+    font-family: var(--font-body);
+    color: var(--color-on-surface);
+}
+
+.roster-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 6rem 1rem 3rem;
+}
+@media (min-width: 768px) {
+    .roster-main {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+.roster {
+    width: 100%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ---------- Toolbar: relation tabs, filters, search ----------
+   Phone: search + filters button on one row, relation tabs under it,
+   the two drop-downs in a panel that slides up from the bottom.
+   From 768px: one row, the drop-downs inline. */
+
+.roster-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+@media (min-width: 768px) {
+    .roster-toolbar {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgb(255 255 255 / 0.05);
+    }
+}
+
+.roster-toolbar__end {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    order: -1;
+}
+@media (min-width: 768px) {
+    .roster-toolbar__end {
+        order: 0;
+        gap: 0.75rem;
+    }
+}
+
+.roster-search {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+@media (min-width: 768px) {
+    .roster-search {
+        width: 18rem;
+    }
+}
+@media (min-width: 1280px) {
+    .roster-search {
+        width: 22rem;
+    }
+}
+
+.roster-search__icon {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    font-size: 20px;
+    color: color-mix(in srgb, var(--color-secondary) 60%, transparent);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.roster-search__input {
+    width: 100%;
+    height: 44px;
+    padding: 0 1rem 0 2.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    background-color: rgb(10 11 10 / 0.8);
+    font-family: var(--font-body);
+    /* 16px: below that, iPhones zoom the page when the field gets focus */
+    font-size: 1rem;
+    color: var(--color-on-surface);
+    transition: border-color 150ms var(--ease), background-color 150ms var(--ease);
+}
+.roster-search__input::placeholder {
+    color: color-mix(in srgb, var(--color-on-surface) 40%, transparent);
+}
+.roster-search__input:focus {
+    border-color: color-mix(in srgb, var(--color-secondary) 50%, transparent);
+    background-color: #0a0b0a;
+}
+
+/* Relation tabs (npc-scripts.js colours the active one: .relation-tab--<relation>) */
+
+.relation-tabs {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.relation-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.relation-tab {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.4rem;
+    height: 36px;
+    padding: 0 0.9rem;
+    border-radius: 18px;
+    border: 1px solid var(--color-outline-variant);
+    background-color: var(--color-surface-container-low);
+    font-family: var(--font-label);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-on-surface-variant);
+    transition: all 150ms var(--ease);
+}
+.relation-tab:hover {
+    color: #fff;
+}
+
+.relation-tab__count {
+    font-weight: 400;
+    color: var(--color-outline);
+}
+.relation-tab.is-active .relation-tab__count {
+    color: inherit;
+    opacity: 0.8;
+}
+
+/* Filters button (phones only) */
+
+.filters-toggle {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 0.375rem;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background-color: var(--color-surface-container);
+    color: var(--color-secondary);
+}
+.filters-toggle[aria-expanded="true"] {
+    border-color: color-mix(in srgb, var(--color-secondary) 50%, transparent);
+}
+@media (min-width: 768px) {
+    .filters-toggle {
+        display: none;
+    }
+}
+
+.filters-toggle__count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9px;
+    background-color: var(--color-secondary);
+    font-family: var(--font-label);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+    color: var(--color-on-secondary);
+}
+
+/* Location / affiliation */
+
+.roster-filters {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.roster-filters__head,
+.roster-filters__foot,
+.filter-select__label {
+    display: none;
+}
+
+.filters-backdrop {
+    display: none;
+}
+
+/* Phone: the panel from the bottom */
+@media (max-width: 767.98px) {
+    .roster-filters {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 90;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 1.25rem 1rem calc(1.25rem + env(safe-area-inset-bottom));
+        border-top: 1px solid color-mix(in srgb, var(--color-secondary) 30%, transparent);
+        border-radius: 1rem 1rem 0 0;
+        background-color: var(--color-surface-container);
+        box-shadow: 0 -20px 60px rgb(0 0 0 / 0.6);
+        transform: translateY(105%);
+        visibility: hidden;
+        transition: transform 250ms var(--ease), visibility 0s linear 250ms;
+    }
+    .roster-filters.is-open {
+        transform: translateY(0);
+        visibility: visible;
+        transition: transform 250ms var(--ease);
+    }
+
+    .filters-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 89;
+        display: block;
+        background-color: rgb(0 0 0 / 0.6);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 250ms var(--ease);
+    }
+    .filters-backdrop.is-open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .roster-filters__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .roster-filters__heading {
+        font-family: var(--font-headline);
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--color-on-surface);
+    }
+
+    .roster-filters__close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        margin-right: -0.5rem;
+        color: var(--color-on-surface-variant);
+    }
+
+    .filter-select__label {
+        display: block;
+        margin-bottom: 0.375rem;
+        font-family: var(--font-label);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--color-outline);
+    }
+
+    .roster-filters__foot {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 0.25rem;
+    }
+
+    .roster-filters__reset,
+    .roster-filters__done {
+        flex: 1;
+        height: 44px;
+        border-radius: 0.375rem;
+        font-family: var(--font-label);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+    .roster-filters__reset {
+        border: 1px solid var(--color-outline-variant);
+        color: var(--color-on-surface-variant);
+    }
+    .roster-filters__done {
+        border: 1px solid var(--color-secondary);
+        background-color: color-mix(in srgb, var(--color-secondary) 15%, transparent);
+        color: var(--color-secondary);
+    }
+}
+
+.filter-select {
+    position: relative;
+    display: block;
+}
+
+.filter-select__input {
+    width: 100%;
+    height: 44px;
+    padding: 0 2.5rem 0 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    background-color: var(--color-surface-container-high);
+    font-family: var(--font-label);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-on-surface);
+    cursor: pointer;
+    appearance: none;
+    transition: border-color 150ms var(--ease);
+}
+.filter-select:hover .filter-select__input,
+.filter-select__input:focus {
+    border-color: color-mix(in srgb, var(--color-secondary) 50%, transparent);
+}
+@media (max-width: 767.98px) {
+    .filter-select__input {
+        font-size: 1rem;
+        text-transform: none;
+        letter-spacing: normal;
+    }
+}
+
+.filter-select__chevron {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 22px;
+    font-size: 16px;
+    color: var(--color-secondary);
+    transform: translateY(50%);
+    pointer-events: none;
+}
+
+.npc-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+@media (min-width: 640px) {
+    .npc-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (min-width: 768px) {
+    .npc-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+@media (min-width: 1024px) {
+    .npc-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+@media (min-width: 1280px) {
+    .npc-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+}
+
+.npc-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: color-mix(in srgb, var(--color-surface) 95%, transparent);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+}
+@media (min-width: 768px) {
+    .npc-modal {
+        padding: 2rem;
+    }
+}
+
+.npc-modal__card {
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    width: 100%;
+    max-width: 64rem;
+    overflow: hidden;
+    border-radius: 0.25rem;
+    border-width: 1px;
+    border-color: color-mix(in srgb, var(--color-secondary) 30%, transparent);
+    background-color: var(--color-surface-container);
+    box-shadow: 0 0 100px rgba(26,48,32,0.8);
+}
+@media (min-width: 768px) {
+    .npc-modal__card {
+        flex-direction: row;
+    }
+}
+
+.npc-modal__portrait {
+    position: relative;
+    flex-shrink: 0;
+    height: 20rem;
+}
+@media (min-width: 768px) {
+    .npc-modal__portrait {
+        height: auto;
+        width: 41.666667%;
+    }
+}
+
+.npc-modal__img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.npc-modal__fade-side {
+    position: absolute;
+    inset: 0;
+    display: none;
+    background-image: linear-gradient(to right, transparent, var(--color-surface-container));
+}
+@media (min-width: 768px) {
+    .npc-modal__fade-side {
+        display: block;
+    }
+}
+
+.npc-modal__fade-bottom {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to top, var(--color-surface-container), transparent);
+}
+@media (min-width: 768px) {
+    .npc-modal__fade-bottom {
+        display: none;
+    }
+}
+
+.npc-modal__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 2rem;
+    text-align: left;
+}
+@media (min-width: 768px) {
+    .npc-modal__content {
+        width: 58.333333%;
+        padding: 3rem;
+    }
+}
+
+.npc-modal__close {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    z-index: 10;
+    color: var(--color-on-surface-variant);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: var(--ease);
+    transition-duration: 150ms;
+}
+.npc-modal__close:hover {
+    color: var(--color-secondary);
+}
+
+.npc-modal__role {
+    margin-bottom: 0.5rem;
+    font-family: var(--font-label);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    color: var(--color-secondary);
+}
+
+.npc-modal__name {
+    margin-bottom: 0.5rem;
+    font-family: var(--font-headline);
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    font-weight: 700;
+    color: var(--color-on-surface);
+}
+
+.npc-modal__quote {
+    margin-bottom: 2rem;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-style: italic;
+    color: var(--color-on-surface-variant);
+}
+
+.npc-modal__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-color: rgb(255 255 255 / 0.05);
+}
+@media (min-width: 1024px) {
+    .npc-modal__facts {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.npc-modal__fact-label {
+    margin-bottom: 0.25rem;
+    font-family: var(--font-label);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-outline);
+}
+
+.npc-modal__fact-value {
+    font-family: var(--font-headline);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    color: var(--color-on-surface);
+}
+
+.npc-modal__whereabouts {
+    grid-column: span 2 / span 2;
+}
+@media (min-width: 1024px) {
+    .npc-modal__whereabouts {
+        grid-column: span 3 / span 3;
+    }
+}
+
+/* Campaigns and the party's relation in each (same pills as the cards) */
+.npc-modal__campaigns {
+    grid-column: 1 / -1;
+}
+
+.npc-modal__campaign-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.npc-modal__campaign {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 0.75rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-on-surface);
+}
+.npc-modal__campaign .npc-card__relation {
+    flex-shrink: 0;
+}
+
+.npc-modal__location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-primary);
+}
+
+.npc-modal__location-icon {
+    font-size: 14px;
+}
+
+.npc-modal__location-text {
+    font-family: var(--font-headline);
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.npc-modal__section-title {
+    margin-bottom: 1rem;
+    font-family: var(--font-label);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-outline);
+}
+
+.npc-modal__body {
+    margin-bottom: 2rem;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    line-height: 1.625;
+    color: var(--color-on-surface-variant);
+}
+.npc-modal__body > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.npc-secrets {
+    position: relative;
+    overflow: hidden;
+    margin-top: auto;
+    padding: 1.5rem;
+    border-radius: 0.125rem;
+    border-width: 1px;
+    border-color: color-mix(in srgb, var(--color-error) 20%, transparent);
+    background-color: #0a0b0a;
+}
+
+.npc-secrets__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-label);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-error);
+}
+
+.npc-secrets__icon {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.npc-secrets__text {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-style: italic;
+    color: color-mix(in srgb, var(--color-error) 80%, transparent);
+    filter: blur(6px);
+    transition: all 700ms var(--ease);
+    cursor: help;
+    user-select: none;
+}
+.npc-secrets:hover .npc-secrets__text {
+    filter: none;
+}
+
+.npc-secrets__veil {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(10 11 10 / 0.5);
+    transition: opacity 500ms var(--ease);
+    pointer-events: none;
+}
+.npc-secrets:hover .npc-secrets__veil {
+    opacity: 0;
+}
+
+.npc-secrets__badge {
+    padding: 0.375rem 1rem;
+    border-radius: 0.125rem;
+    border-width: 1px;
+    border-color: color-mix(in srgb, var(--color-error) 50%, transparent);
+    background-color: #000;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-error);
+    box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--color-error) 20%, transparent), 0 4px 6px -4px color-mix(in srgb, var(--color-error) 20%, transparent);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+
+/* Active relation tab (npc-scripts.js sets .is-active and .relation-tab--<relation>) */
+
+.relation-tab.is-active {
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.relation-tab--all.is-active {
+    border-color: color-mix(in srgb, var(--color-secondary) 30%, transparent);
+    background-color: color-mix(in srgb, var(--color-secondary) 20%, transparent);
+    color: var(--color-secondary);
+}
+.relation-tab--all.is-active:hover {
+    color: var(--color-secondary);
+}
+
+.relation-tab--ally.is-active {
+    border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+    background-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+    color: var(--color-primary);
+}
+.relation-tab--ally.is-active:hover {
+    color: var(--color-primary);
+}
+
+.relation-tab--neutral.is-active {
+    border-color: rgb(96 165 250 / 0.3);
+    background-color: rgb(96 165 250 / 0.2);
+    color: #60a5fa;
+}
+.relation-tab--neutral.is-active:hover {
+    color: #60a5fa;
+}
+
+.relation-tab--hostile.is-active {
+    border-color: color-mix(in srgb, var(--color-error) 30%, transparent);
+    background-color: color-mix(in srgb, var(--color-error) 20%, transparent);
+    color: var(--color-error);
+}
+.relation-tab--hostile.is-active:hover {
+    color: var(--color-error);
+}
+
+/* Modal: shown by removing .hidden */
+
+.npc-modal {
+    display: flex;
+}
+
+/* NPC cards (built in npc-scripts.js) */
+
+.npc-modal__empty {
+    font-style: italic;
+    color: color-mix(in srgb, var(--color-on-surface) 40%, transparent);
+}
+
+.npc-grid__empty {
+    grid-column: 1 / -1;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    text-align: center;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-style: italic;
+    color: color-mix(in srgb, var(--color-on-surface) 40%, transparent);
+}
+
+.npc-card {
+    position: relative;
+    aspect-ratio: 3/4;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.25rem;
+    border-width: 1px;
+    border-color: color-mix(in srgb, var(--color-outline-variant) 30%, transparent);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    transition: all 500ms var(--ease);
+    cursor: pointer;
+}
+.npc-card:hover {
+    border-color: color-mix(in srgb, var(--color-secondary) 50%, transparent);
+    box-shadow: 0 0 30px rgba(233,193,118,0.15);
+}
+
+.npc-card__img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+    filter: grayscale(100%);
+    transition: all 700ms var(--ease);
+}
+.npc-card:hover .npc-card__img {
+    transform: scale(1.05);
+    opacity: 1;
+    filter: grayscale(0);
+}
+
+.npc-card__shade {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to top, #0a0b0a, rgb(10 11 10 / 0.4), transparent);
+    opacity: 0.9;
+    transition: opacity 500ms var(--ease);
+}
+.npc-card:hover .npc-card__shade {
+    opacity: 1;
+}
+
+.npc-card__badges {
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    top: 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.npc-card__place {
+    max-width: 50%;
+    overflow: hidden;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.125rem;
+    border-width: 1px;
+    border-color: rgb(255 255 255 / 0.1);
+    background-color: rgb(0 0 0 / 0.6);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-on-surface-variant);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.npc-card__relation {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.75rem;
+    border-width: 1px;
+    background-color: rgb(0 0 0 / 0.8);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.npc-card__dot {
+    height: 0.375rem;
+    width: 0.375rem;
+    border-radius: 0.75rem;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.npc-card__relation-label {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.npc-card__caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    transform: translateY(0.5rem);
+    transition: transform 500ms var(--ease);
+}
+.npc-card:hover .npc-card__caption {
+    transform: translate(0, 0);
+}
+
+.npc-card__role {
+    margin-bottom: 0.25rem;
+    font-family: var(--font-label);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-secondary);
+    filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
+}
+
+.npc-card__name {
+    font-family: var(--font-headline);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--color-on-surface);
+    filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+}
+
+.npc-card__location {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+    color: rgb(195 200 192 / 0);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: var(--ease);
+    transition-duration: 500ms;
+}
+.npc-card:hover .npc-card__location {
+    color: var(--color-on-surface-variant);
+}
+
+.npc-card__location-icon {
+    font-size: 12px;
+}
+
+.npc-card__location-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Relation badge tones */
+
+.npc-card__relation--unknown {
+    background-color: var(--color-surface-container-highest);
+    color: var(--color-on-surface);
+}
+
+.npc-card__relation--unknown .npc-card__dot {
+    background-color: #9ca3af;
+}
+
+.npc-card__relation--ally {
+    border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+    color: var(--color-primary);
+}
+
+.npc-card__relation--ally .npc-card__dot {
+    background-color: var(--color-primary);
+}
+
+.npc-card__relation--hostile {
+    border-color: color-mix(in srgb, var(--color-error) 30%, transparent);
+    color: var(--color-error);
+}
+
+.npc-card__relation--hostile .npc-card__dot {
+    background-color: var(--color-error);
+    box-shadow: 0 0 5px rgba(255,82,82,0.8);
+}
+
+.npc-card__relation--neutral {
+    border-color: rgb(96 165 250 / 0.3);
+    color: #60a5fa;
+}
+
+.npc-card__relation--neutral .npc-card__dot {
+    background-color: #60a5fa;
+    box-shadow: 0 0 5px rgba(96,165,250,0.8);
+}
+
+.npc-card__relation--killed {
+    border-color: rgb(69 10 10 / 0.3);
+}
+
+/* =====================================================================
+   PHONES
+   ===================================================================== */
+
+/* The card is a <button>: keep the portrait-card look */
+.npc-card {
+    display: block;
+    padding: 0;
+    background-color: var(--color-surface-container-lowest);
+    text-align: left;
+}
+.npc-card:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+}
+
+/* Small avatar: only shown in the phone list */
+.npc-card__avatar {
+    display: none;
+}
+
+/* Touch screens have no hover: show the portraits in colour */
+@media (hover: none) {
+    .npc-card__img {
+        filter: none;
+        opacity: 0.9;
+    }
+    .npc-card__location {
+        color: var(--color-on-surface-variant);
+    }
+}
+
+/* ---------- Below 640px: compact list ----------
+   avatar | name / role / faction | relation */
+@media (max-width: 639.98px) {
+    .npc-grid {
+        gap: 0;
+    }
+
+    .npc-card {
+        display: grid;
+        grid-template-columns: 52px minmax(0, 1fr) auto;
+        grid-template-areas:
+            "avatar caption relation"
+            "avatar place   relation";
+        align-items: center;
+        column-gap: 0.75rem;
+        aspect-ratio: auto;
+        min-height: 72px;
+        padding: 0.625rem 0;
+        border: 0;
+        border-bottom: 1px solid rgb(255 255 255 / 0.06);
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
+    }
+    .npc-card:hover {
+        border-color: rgb(255 255 255 / 0.06);
+        box-shadow: none;
+    }
+
+    .npc-card__img,
+    .npc-card__shade,
+    .npc-card__location {
+        display: none;
+    }
+
+    .npc-card__avatar {
+        display: block;
+        grid-area: avatar;
+        width: 52px;
+        height: 52px;
+        border-radius: 0.25rem;
+        border: 1px solid color-mix(in srgb, var(--color-secondary) 30%, transparent);
+        object-fit: cover;
+    }
+
+    /* The badge row melts into the grid: faction under the name, relation on the right */
+    .npc-card__badges {
+        display: contents;
+    }
+
+    .npc-card__place {
+        grid-area: place;
+        align-self: start;
+        max-width: none;
+        padding: 0;
+        border: 0;
+        background: none;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        font-family: var(--font-label);
+        font-size: 11px;
+        text-transform: none;
+        letter-spacing: normal;
+        color: var(--color-outline);
+    }
+
+    .npc-card__relation {
+        grid-area: relation;
+    }
+
+    /* Name first, then role */
+    .npc-card__caption {
+        position: static;
+        grid-area: caption;
+        align-self: end;
+        display: flex;
+        flex-direction: column-reverse;
+        min-width: 0;
+        padding: 0;
+        transform: none;
+    }
+
+    .npc-card__name {
+        overflow: hidden;
+        font-size: 1rem;
+        line-height: 1.375rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .npc-card__role {
+        margin: 0.125rem 0 0;
+        overflow: hidden;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .npc-grid__empty {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+}
+
+/* ---------- NPC pop-up below 768px: a full-screen page ---------- */
+@media (max-width: 767.98px) {
+    .npc-modal {
+        padding: 0;
+        background-color: var(--color-surface);
+    }
+
+    .npc-modal__card {
+        height: 100%;
+        max-height: none;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .npc-modal__portrait {
+        height: 18rem;
+    }
+
+    .npc-modal__content {
+        overflow: visible;
+        padding: 0.5rem 1.25rem calc(2.5rem + env(safe-area-inset-bottom));
+    }
+
+    .npc-modal__name {
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+    }
+
+    .npc-modal__role {
+        letter-spacing: 0.25em;
+    }
+
+    /* Stays on screen while the page scrolls */
+    .npc-modal__close {
+        position: fixed;
+        top: calc(0.75rem + env(safe-area-inset-top));
+        right: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 22px;
+        border: 1px solid rgb(255 255 255 / 0.15);
+        background-color: rgb(10 11 10 / 0.75);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        color: var(--color-on-surface);
+    }
+}
+
+/* From 768px the close button sits in the content column, top right */
+@media (min-width: 768px) {
+    .npc-modal__card {
+        position: relative;
+    }
+    .npc-modal__close {
+        right: 1.5rem;
+        top: 1.5rem;
+    }
+}
+
+/* No page scrolling behind an open pop-up (npc-scripts.js) */
+html.has-modal-open {
+    overflow: hidden;
+}
+
+/* ---------- Classified secrets: hover, tap or keyboard ---------- */
+.npc-secrets {
+    cursor: pointer;
+}
+.npc-secrets:focus-visible {
+    outline: 2px solid var(--color-error);
+    outline-offset: 2px;
+}
+.npc-secrets.is-revealed .npc-secrets__text {
+    filter: none;
+    user-select: text;
+}
+.npc-secrets.is-revealed .npc-secrets__veil {
+    opacity: 0;
+}
+
+.npc-secrets__hint--touch {
+    display: none;
+}
+@media (hover: none) {
+    .npc-secrets__hint--hover {
+        display: none;
+    }
+    .npc-secrets__hint--touch {
+        display: inline;
+    }
+}

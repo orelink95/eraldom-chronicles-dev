@@ -1,0 +1,33 @@
+{
+  "length": 6,
+  "sessions": [
+    {
+      "campaign": "last-sigil",
+      "number": 11,
+      "date": "2026-11-18",
+      "time": "14:00",
+      "status": "postponed"
+    },
+    {
+      "campaign": "echoes-from-the-void",
+      "number": 7,
+      "date": "2026-12-05",
+      "time": "11:00",
+      "where": "Location TBD"
+    },
+    {
+      "campaign": "echoes-from-the-void",
+      "number": 8,
+      "date": "2027-01-16",
+      "time": "11:00",
+      "status": "tentative"
+    },
+    {
+      "number": 1,
+      "time": "14:00",
+      "status": "tentative",
+      "title": "The Wyrmfell Incident",
+      "where": "TBA"
+    }
+  ]
+}

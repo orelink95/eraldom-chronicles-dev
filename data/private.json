@@ -1,0 +1,28 @@
+{
+    "npc": {
+        "lordwhite": {
+            "secrets": "fdhbizueghb Hzo lmjPIF Hndz njz!rem"
+        },
+        "sephet": {
+            "secrets": "ezrt _: zf e'!fzattgzesrd"
+        }
+    },
+    "hero": {
+        "nimo": {
+            "secret": "Nimo secretly pocketed an extra 100gp from the reward advance without telling the party. Also, the guild mark found at the scene matches the one on the dagger Nimo inherited...",
+            "password": "coin"
+        },
+        "gust": {
+            "secret": "Gust has a secret too",
+            "password": "charm"
+        },
+        "eli": {
+            "secret": "Eli forgot his own brother",
+            "password": "knowledge"
+        },
+        "davnis": {
+            "secret": "A part of Davnis revels in looking for love on his term because he couldn't cope with an actual relationship.",
+            "password": "love"
+        }
+    }
+}

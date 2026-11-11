@@ -1,0 +1,61 @@
+[
+  {
+    "id": "ophrasian-war",
+    "name": "Ophrasian War",
+    "kind": "lore",
+    "definition": "A cataclysmic conflict that lasted for forty years, reshaping the borders of Maltona and leaving the Boundless Vale scarred by a new, dark form of magic."
+  },
+  {
+    "id": "void-crystal",
+    "name": "Void Crystal",
+    "kind": "object",
+    "definition": "A rare mineral found only in the deepest reaches of Blackreach; it hums with the frequency of the Ethereal Plane."
+  },
+  {
+    "id": "behemoth",
+    "name": "Behemoth",
+    "kind": "monster",
+    "definition": "A colossal, mutated fungal beast native to the deepest caverns of Maltona. Highly dangerous."
+  },
+  {
+    "id": "vale-house",
+    "name": "Vale House",
+    "kind": "place",
+    "definition": "A mysterious demi-plane consisting of a pristine yet apparently abandoned mansion, once inhabited by a mysterious spellcaster named Alensia."
+  },
+  {
+    "id": "doleris",
+    "name": "Doleris",
+    "kind": "lore"
+  },
+  {
+    "id": "alensia",
+    "name": "Alensia",
+    "kind": "person",
+    "definition": "Wizard creator and owner of the Vale House, apparently involved with Freyot in a way."
+  },
+  {
+    "id": "freyot",
+    "name": "Freyot",
+    "kind": "person",
+    "definition": "Mysterious figure brought up by the homonculi that still inhabit the Vale House."
+  },
+  {
+    "id": "ekelph",
+    "name": "Ekelph",
+    "kind": "lore",
+    "definition": "An alternative script used by the Doleris. Mostly thought to have been used to encrypt messages."
+  },
+  {
+    "id": "nihilium",
+    "name": "Nihilium",
+    "kind": "object",
+    "definition": "A crystallization of Void energy that started to plague the Material Plane as a result of a botched spell at the end of the Ophrasian War."
+  },
+  {
+    "id": "order-of-the-lens",
+    "name": "Order of the Lens",
+    "kind": "faction",
+    "definition": "*Field*: History and prophecy\nMotto: “To know what came before is to see what comes next.”\nRole: They maintain the Chronicle Vaults and the prophecies of Ereor Menolas. \nNotable Trait: They recite an oath each morning to not alter a single recorded word, no matter how damning."
+  }
+]

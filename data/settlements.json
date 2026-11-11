@@ -1,0 +1,58 @@
+[
+  {
+    "id": "brightend",
+    "name": "Brightend",
+    "parent": "eperina",
+    "subtitle": "Capital of Eperina",
+    "codex": "Codex Entry: 17.B",
+    "summary": "The shining capital of Eperina. A sprawling metropolis divided by wealth, altitude, and ambition.",
+    "body": "Brightend, the Beacon of Men, was founded by Amycia Eperina, after the Ophrasian War in order to protect the remaining humans from the nothern provinces who had not been massacred during the conflict. It became a safe haven for the oppressed.",
+    "map": {
+      "x": 1454,
+      "y": 698,
+      "icon": "capital"
+    }
+  },
+  {
+    "id": "deercrest",
+    "name": "Deercrest",
+    "parent": "eperina",
+    "subtitle": "Small Town",
+    "codex": "Codex Entry: 14.G",
+    "body": "At first a hunter's outpost, Deercrest became the renowned town it is now after decades of steady and laborious growth. At the western border of Eperina, Deercrest is a necessary stop for those who enter the Kingdom through the woods.",
+    "map": {
+      "x": 534,
+      "y": 619,
+      "icon": "settlement"
+    }
+  },
+  {
+    "id": "twill",
+    "name": "Twill",
+    "parent": "eperina",
+    "map": {
+      "x": 1079,
+      "y": 618
+    }
+  },
+  {
+    "id": "silverbrook",
+    "name": "Silverbrook",
+    "parent": "wildlands",
+    "subtitle": "Little Town",
+    "summary": "A little town made of scraps, lost in the wild, built on ruins.",
+    "body": "A little town made of scraps, lost in the wild and built on ruins. Who created the settlement and how it grew remains quite mysterious, but the inhabitants now seem to be able to protect themselves from the horrors of the wild... mostly. "
+  },
+  {
+    "id": "city-lemerolai",
+    "name": "Lemerolai",
+    "parent": "lemerolai",
+    "subtitle": "The Ever Standing City",
+    "codex": "Codex Entry:07.B",
+    "map": {
+      "x": 312,
+      "y": 371,
+      "icon": "capital"
+    }
+  }
+]

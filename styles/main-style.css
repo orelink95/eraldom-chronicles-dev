@@ -1,0 +1,421 @@
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.mask-ink {
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+.glass-panel {
+    background: rgba(18, 20, 18, 0.85);
+    backdrop-filter: blur(12px);
+}
+
+.particle {
+    position: absolute;
+    background: radial-gradient(circle, rgba(233, 193, 118, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+
+/* For World Atlas */
+.parchment-mask {
+    mask-image: radial-gradient(circle, black 70%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle, black 70%, transparent 100%);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #121412;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #333533;
+}
+
+/* Sidebar Toggle Logic */
+#sidebar-toggle-input:checked~aside {
+    width: 80px;
+}
+
+#sidebar-toggle-input:checked~aside .nav-label {
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+}
+
+#sidebar-toggle-input:checked~aside .header-text {
+    display: none;
+}
+
+#sidebar-toggle-input:checked~main {
+    margin-left: 80px;
+}
+
+#sidebar-toggle-input:checked~aside #toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* Navigation Hover Animation */
+.nav-item .nav-label {
+    max-width: 0;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.nav-item:hover .nav-label {
+    max-width: 200px;
+    opacity: 1;
+    margin-left: 0.5rem;
+}
+
+/* Modal logic */
+#not-see-modal.hidden {
+    display: none;
+}
+
+#not-see-modal:not(.hidden) {
+    display: flex;
+}
+
+
+/* tooltip container*/
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Tooltip text */
+.tooltiptext {
+    visibility: hidden;
+    /* Hidden by default */
+    width: 130px;
+    background-color: black;
+    color: #ffffff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 4;
+}
+
+/* Show the tooltip text on hover */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+/*For the NPCs and Scriptorium pages*/
+
+/* 1. The main class now ONLY handles the background color */
+.archival-bg {
+    background-color: #1a1c1a; 
+}
+
+/* 2. We move the dots and the brightness filter to a safe background layer! */
+.archival-bg::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-color: #1a1c1a;
+    background-image: radial-gradient(rgba(233, 193, 118, 0.15) 1px, transparent 1px);
+    background-size: 32px 32px;
+    filter: brightness(1.3) contrast(1.1);
+    pointer-events: none; /* Ensures you can still click the timeline through it */
+}
+
+
+/* Categorized Keyword Colors */
+
+
+/* Green */
+.kw-person {
+    color: #66c488;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: rgba(138, 223, 142, 0.65)
+}
+
+/* Blue */
+.kw-place {
+    color: #559df7;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: rgba(96, 165, 250, 0.3);
+}
+
+/* Red */
+.kw-monster {
+    color: #bd6363;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 1px dashed rgba(248, 113, 113, 0.5);
+    position: relative;
+}
+
+/* Orange */
+.kw-faction {
+    color: #fb923c;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 1px dashed rgba(251, 146, 60, 0.5);
+    position: relative;
+}
+
+/* gold */
+.kw-lore {
+    color: #e9c176;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 1px dashed rgba(233, 193, 118, 0.5);
+    position: relative;
+}
+
+/* Gold */
+.kw-object {
+    color: #7b49d8;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 1px dashed rgba(192, 132, 252, 0.5);
+    position: relative;
+}
+
+/* Purple */
+
+/* Teal: spells (scripts/core/store.js LINK_CLASS) */
+.kw-spell {
+    color: #4fb8c4;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 1px dashed rgba(79, 184, 196, 0.5);
+    position: relative;
+}
+
+/* Pale gold: deities (scripts/core/store.js LINK_CLASS) */
+.kw-deity {
+    color: #f3dc9b;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 1px dotted rgba(243, 220, 155, 0.6);
+    position: relative;
+}
+
+/* Tooltip Styling */
+#keyword-tooltip {
+    position: fixed;
+    z-index: 200;
+    width: 280px;
+    background: #1a1c1a;
+    border: 1px solid #e9c176;
+    /* Default border, will be changed by JS */
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5);
+    display: none;
+    pointer-events: auto;
+}
+
+/* =========================================
+   LIBRARY OF AGES (Landing Page Styles)
+   ========================================= */
+
+/* The Nebula Background Effect */
+.mystical-bg {
+    background-color: #030303;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(26, 11, 46, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(15, 23, 42, 0.5) 0%, transparent 50%);
+    background-attachment: fixed;
+    filter: brightness(1.4) contrast(1.1) saturate(1.3);
+}
+
+/* Ambient Dust Particles */
+.dust {
+    position: absolute;
+    background: radial-gradient(circle, rgba(233, 193, 118, 0.8) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    animation: dust-drift 15s linear infinite;
+}
+
+@keyframes dust-drift {
+    0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.6;
+    }
+
+    80% {
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: translateY(-20vh) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Gateway Card */
+.gateway-card {
+    background-color: rgba(10, 11, 10, 0.6);
+    background-image:
+        /* 1. Subtle golden spotlight from top */
+        radial-gradient(circle at 50% 0%, rgba(233, 193, 118, 0.15) 0%, transparent 60%),
+        /* 2. Deep void purple glow from bottom right */
+        radial-gradient(circle at 100% 100%, rgba(26, 11, 46, 0.5) 0%, transparent 60%),
+        /* 3. Micro-dot texture */
+        radial-gradient(rgba(233, 193, 118, 0.06) 1px, transparent 1px),
+        /* 4. Base glassmorph */
+        linear-gradient(180deg, rgba(18, 20, 18, 0.2) 0%, rgba(10, 11, 10, 0.8) 100%);
+
+    /*  dots repeat, but gradients stretch */
+    background-size: 100% 100%, 100% 100%, 16px 16px, 100% 100%;
+
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(233, 193, 118, 0.1);
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.gateway-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(233, 193, 118, 0.15);
+    background-image:
+        radial-gradient(circle at 50% 0%, rgba(233, 193, 118, 0.25) 0%, transparent 70%),
+        radial-gradient(circle at 100% 100%, rgba(26, 11, 46, 0.7) 0%, transparent 60%),
+        radial-gradient(rgba(233, 193, 118, 0.1) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(18, 20, 18, 0.4) 0%, rgba(10, 11, 10, 0.9) 100%);
+}
+
+.gateway-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(45deg, transparent, rgba(233, 193, 118, 0.6), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+
+
+.gateway-card:hover::before {
+    opacity: 1;
+}
+
+.card-icon {
+    filter: drop-shadow(0 0 15px rgba(233, 193, 118, 0));
+    transition: filter 0.7s ease, transform 0.7s ease;
+}
+
+.gateway-card:hover .card-icon {
+    filter: drop-shadow(0 0 20px rgba(233, 193, 118, 0.4));
+    transform: scale(1.1) translateY(-5px);
+    /*Soft pulse animation starts AFTER the initial 0.7s glide finishes */
+    animation: card-icon-pulse 3s ease-in-out infinite;
+    animation-delay: 0.7s;
+}
+
+/* Keyframes for the soft breathing effect */
+@keyframes card-icon-pulse {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 20px rgba(233, 193, 118, 0.4));
+        transform: scale(1.1) translateY(-5px);
+    }
+
+    50% {
+        /* Increases the glow and pushes it slightly higher/larger */
+        filter: drop-shadow(0 0 40px rgba(233, 193, 118, 0.9));
+        transform: scale(1.15) translateY(-8px);
+    }
+}
+
+/* Drop cap for Markdown lore bodies (store.md(text, {dropCap: true})) */
+.drop-cap {
+    float: left;
+    font-family: 'Noto Serif', serif;
+    font-size: 3.75rem;
+    line-height: 1;
+    color: #e9c176;
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    filter: drop-shadow(0 0 10px rgba(233, 193, 118, 0.3));
+}
+/* Smaller drop cap without the glow (tomes, bestiary) */
+.small-drop-cap .drop-cap {
+    font-size: 3rem;
+    filter: none;
+}
+.is-danger .drop-cap {
+    color: #ffb4ab;
+    filter: drop-shadow(0 0 10px rgba(255, 180, 171, 0.3));
+}
+
+/* Campaign story and session transcripts (scriptorium.html) */
+.story-text .drop-cap {
+    font-size: 3rem;
+    padding-top: 0.25rem;
+}
+@media (min-width: 768px) {
+    .story-text .drop-cap {
+        font-size: 4.5rem;
+        padding-top: 0.5rem;
+    }
+}
+.story-text blockquote,
+.session-text blockquote {
+    margin: 2rem 0;
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    border-left: 2px solid #1a3020;
+}
+.story-text blockquote p,
+.session-text blockquote p {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    color: #e2e3df;
+}
+.session-text blockquote p {
+    font-size: 1.25rem;
+}
+
+/* Markdown blockquotes in lore bodies */
+.lore blockquote {
+    position: relative;
+    margin: 2rem 0;
+    padding-left: 1.5rem;
+    border-left: 2px solid rgba(151, 211, 158, 0.3);
+}
+.lore blockquote p { font-style: italic; opacity: 0.8; }
+.lore blockquote cite {
+    display: block;
+    margin-top: 0.75rem;
+    font-style: normal;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #97d39e;
+}
+.lore blockquote cite::before { content: '— '; }
+.lore p + p { margin-top: 1rem; }

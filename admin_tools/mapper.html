@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Eraldom Archives - Precise Cartographer</title>
+    <link href="mapper.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Newsreader:ital,wght@0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: #0a0b0a;
+            color: #e2e3df;
+            overflow: hidden;
+        }
+
+        .font-headline {
+            font-family: 'Newsreader', serif;
+        }
+
+        #map {
+            height: calc(100vh - 180px);
+            background: #050505;
+            border: 1px solid rgba(233, 193, 118, 0.1);
+            cursor: crosshair;
+        }
+
+        .input-vault {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #e9c176;
+            outline: none;
+        }
+
+        .input-vault:focus {
+            border-color: #e9c176;
+        }
+    </style>
+</head>
+
+<body class="mapper">
+
+    <header class="mapper__head">
+        <div>
+            <h1 class="mapper__title font-headline">Precise Cartographer</h1>
+            <p class="mapper__subtitle">Resolution-Aware Coordinate Tool</p>
+        </div>
+
+        <div class="mapper__controls">
+            <div class="mapper__field">
+                <label class="mapper__label">Target Resolution (W x H)</label>
+                <div class="mapper__inputs">
+                    <input type="number" id="res-w" placeholder="Width" class="mapper__size input-vault">
+                    <input type="number" id="res-h" placeholder="Height" class="mapper__size input-vault">
+                    <button onclick="updateMapBounds()"
+                        class="mapper__button">Update
+                        Grid</button>
+                </div>
+            </div>
+            <div class="mapper__upload">
+                <input type="file" id="map-upload" accept="image/*" class="mapper__file hidden">
+                <label for="map-upload"
+                    class="mapper__upload-button">
+                    <span class="mapper__upload-icon material-symbols-outlined">upload_file</span> Load Image
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <main class="mapper__layout">
+        <div class="mapper__stage">
+            <div id="map" class="mapper__map"></div>
+            <div id="drop-overlay"
+                class="mapper__overlay">
+                <span class="mapper__overlay-icon material-symbols-outlined">map</span>
+                <p class="mapper__overlay-text">Waiting for map data...</p>
+            </div>
+        </div>
+
+        <div class="mapper__side">
+            <div class="mapper__panel">
+                <h2 class="mapper__panel-title">Output Log</h2>
+                <div class="mapper__panel-body">
+                    <div>
+                        <label class="mapper__point-label">Current Point [Y, X]</label>
+                        <div id="coord-leaflet"
+                            class="mapper__point">
+                            ---</div>
+                    </div>
+                    <div class="mapper__hint">
+                        Les coordonnées sont basées sur le point <span class="mapper__hint-strong">[0,0]</span> en bas à gauche
+                        de votre résolution cible.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mapper__note">
+                <h2 class="mapper__note-title">Technical Note</h2>
+                <p class="mapper__note-text">
+                    Si votre image fait <span class="mapper__note-strong">2000x1000px</span> mais que votre JS attend du
+                    <span class="mapper__note-strong">1000x500px</span>, saisissez la résolution cible manuellement pour
+                    conserver l'échelle de votre base de données.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        let map, imageLayer, currentImgUrl;
+        const resW = document.getElementById('res-w');
+        const resH = document.getElementById('res-h');
+        const uploadInput = document.getElementById('map-upload');
+        const coordDisplay = document.getElementById('coord-leaflet');
+
+        // Initialisation standard CRS Simple
+        map = L.map('map', {
+            crs: L.CRS.Simple,
+            minZoom: -3,
+            maxZoom: 3,
+            attributionControl: false
+        });
+
+        uploadInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const img = new Image();
+                img.onload = function () {
+                    // Auto-fill inputs with real file dimensions
+                    resW.value = img.width;
+                    resH.value = img.height;
+                    currentImgUrl = event.target.result;
+                    setupMap(img.width, img.height);
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function setupMap(w, h) {
+            if (!currentImgUrl) return;
+            if (imageLayer) map.removeLayer(imageLayer);
+            document.getElementById('drop-overlay').classList.add('hidden');
+
+            // Utilise les valeurs passées ou les valeurs des inputs
+            const width = parseInt(w);
+            const height = parseInt(h);
+            const bounds = [[0, 0], [height, width]];
+
+            imageLayer = L.imageOverlay(currentImgUrl, bounds).addTo(map);
+            map.fitBounds(bounds);
+            map.setMaxBounds(bounds.pad(0.1));
+        }
+
+        function updateMapBounds() {
+            if (!currentImgUrl) {
+                alert("Please load an image first.");
+                return;
+            }
+            setupMap(resW.value, resH.value);
+        }
+
+        map.on('click', function (e) {
+            if (!imageLayer) return;
+
+            const y = Math.round(e.latlng.lat);
+            const x = Math.round(e.latlng.lng);
+            const formatted = `[${y}, ${x}]`;
+
+            coordDisplay.innerText = formatted;
+            navigator.clipboard.writeText(formatted);
+
+            L.popup({ closeButton: false, className: 'vault-popup' })
+                .setLatLng(e.latlng)
+                .setContent(`<div class="mapper__copied">${formatted} COPIED</div>`)
+                .openOn(map);
+        });
+    </script>
+</body>
+
+</html>

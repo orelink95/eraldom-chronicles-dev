@@ -1,0 +1,108 @@
+[
+  {
+    "id": "vial-of-mysterious-black-substance",
+    "name": "Phial of mysterious black substance",
+    "image": "images/black-vial.png",
+    "type": "Potion",
+    "rarity": "Rare",
+    "cost": "??",
+    "summary": "A strange vial filled with swirling black goo. In constant movement, it seems to have a mind of its own."
+  },
+  {
+    "id": "dark-shard-amulet",
+    "name": "Dark Shard Amulet",
+    "image": "images/Dark_Shard_Amulet.png",
+    "rarity": "Very rare",
+    "summary": "A heavy, aged bronze amulet featuring a swirling, trapped galaxy of indigo and green.It hums with a faint, cosmic pulse, and a drift of purple smoke sometimes reveals shifting runes."
+  },
+  {
+    "id": "book-of-city-sewer-maps",
+    "name": "Book of city sewer maps",
+    "image": "images/sewermap.jpg",
+    "rarity": "Unknown",
+    "summary": "An old leather tome containing various schematics and blueprints for the ancient sewer system"
+  },
+  {
+    "id": "partially-broken-token",
+    "name": "Partially broken token",
+    "image": "images/Talon Token half.PNG",
+    "rarity": "Unknown"
+  },
+  {
+    "id": "queen-thalen-compendium-borrowed",
+    "name": "Queen Thalen Compendium (borrowed)"
+  },
+  {
+    "id": "strange-token",
+    "name": "Strange Token",
+    "image": "images/str_token.PNG",
+    "summary": "A small wooden token circled with an exotic metal, featuring three roughly made claw marks."
+  },
+  {
+    "id": "potion-of-healing",
+    "name": "Potion of Healing",
+    "image": "images/health-potion.png",
+    "rarity": "Common",
+    "summary": "The warm red liquid is bitter sweet, familiar yet always surprising."
+  },
+  {
+    "id": "4-pints-of-excellent-whisky",
+    "name": "4 Pints of Excellent Whisky",
+    "image": "images/whiskey.jpg",
+    "rarity": "Common",
+    "attunedBy": "davnis"
+  },
+  {
+    "id": "notes-on-the-everlasting-book",
+    "name": "Notes on The Everlasting (Book)"
+  },
+  {
+    "id": "meditations-on-the-way-of-the-lizard-book",
+    "name": "Meditations on the Way of the Lizard (Book)"
+  },
+  {
+    "id": "pirate-erotica",
+    "name": "Pirate Erotica"
+  },
+  {
+    "id": "maeras-shawl",
+    "name": "Maera's Shawl",
+    "image": "images/scarf.png",
+    "type": "Clothing",
+    "rarity": "Common",
+    "cost": "1 sp",
+    "weight": "Light",
+    "summary": "A nice red shawl belonging to Maera. Or is it a scarf ?"
+  },
+  {
+    "id": "trauma",
+    "name": "Trauma",
+    "image": "images/trauma.jpg",
+    "type": "Psychic Wound",
+    "rarity": "Common",
+    "cost": "Everything ?",
+    "weight": "Really heavy",
+    "attunedBy": "maevik",
+    "summary": "The horrors of the world affected you deeply"
+  },
+  {
+    "id": "ulnoryas-tooth",
+    "name": "Ulnorya's Tooth",
+    "type": "Alchemical Ingredient",
+    "rarity": "Very rare",
+    "cost": "50  GP",
+    "weight": "20 gr",
+    "summary": "A razor-sharp tooth taken from the mouth of an Ulnorya.",
+    "body": "During their travels, Maevik and Eli were ambushed by an Ulnorya near Silverbrook. After a difficult fight, on Eli's request, Maevik secured one of the creature's teeth. "
+  },
+  {
+    "id": "phial-of-void-air",
+    "name": "Phial of Void-air",
+    "type": "Wondrous Item",
+    "rarity": "Unknown",
+    "cost": "??",
+    "weight": "weightless",
+    "summary": "A phial filled with air",
+    "body": "This phial is filled with air taken from a void anomaly. Its exact contents are unknown, and whether it actually contains something is a mystery."
+  }
+]
